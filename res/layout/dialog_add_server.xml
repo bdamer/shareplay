@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  style="@style/Dialog">
+    <EditText android:layout_width="fill_parent" 
+    		  android:layout_height="wrap_content"  
+    		  android:saveEnabled="false" 
+    		  android:lines="1" android:id="@+id/edit_name" android:hint="@string/label_name">
+        <requestFocus></requestFocus>
+    </EditText>
+    <EditText android:layout_height="wrap_content" android:id="@+id/edit_address" android:lines="1" android:keepScreenOn="true" android:layout_width="fill_parent" android:hint="@string/label_host_or_address"></EditText>
+    <EditText android:layout_height="wrap_content" android:id="@+id/edit_port" android:lines="1" android:keepScreenOn="true" android:layout_width="fill_parent" android:hint="@string/label_port"></EditText>
+    <Button android:id="@+id/button_ok"
+    		android:text="@string/button_ok" 
+    		android:layout_gravity="center" 
+    		android:minWidth="100dp" 
+    		style="@style/Button.large"/>
+</LinearLayout>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@android:id/tabhost" style="@style/Activity">
+
+    <LinearLayout android:id="@+id/linearLayout1"
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent"
+		android:orientation="vertical">
+
+        <LinearLayout
+            style="@style/Toolbar"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/ToolbarLabel"
+                android:id="@+id/text_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="right" >
+
+                <ImageButton
+                    android:id="@+id/image_search"
+                    style="@style/ImageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon48_search" />
+
+            </LinearLayout>
+            
+        </LinearLayout>
+	
+        <TabWidget android:layout_width="fill_parent"
+				   android:layout_height="wrap_content" 
+				   android:id="@android:id/tabs"></TabWidget>
+		<FrameLayout android:layout_width="fill_parent"
+			android:id="@android:id/tabcontent" 
+			android:layout_height="wrap_content"
+			android:layout_weight="1">
+			<LinearLayout android:layout_width="fill_parent"
+				android:layout_height="fill_parent" android:id="@+id/tab_artists">
+				<ListView android:layout_weight="1" android:id="@+id/list_artists"
+					android:textFilterEnabled="true" android:fastScrollEnabled="true" style="@style/List"></ListView>
+			</LinearLayout>
+			<LinearLayout android:layout_width="fill_parent"
+				android:layout_height="fill_parent" android:id="@+id/tab_albums">
+				<ListView android:layout_weight="1" android:id="@+id/list_albums"
+					android:textFilterEnabled="true" android:fastScrollEnabled="true" style="@style/List"></ListView>
+			</LinearLayout>
+			<LinearLayout android:layout_width="fill_parent"
+				android:layout_height="fill_parent" android:id="@+id/tab_playlists">
+				<ListView android:layout_weight="1" android:id="@+id/list_playlists"
+					android:textFilterEnabled="true" android:fastScrollEnabled="true" style="@style/List"></ListView>
+			</LinearLayout>
+			<LinearLayout android:layout_width="fill_parent"
+				android:layout_height="fill_parent" android:id="@+id/tab_songs">
+				<ListView android:layout_weight="1" android:id="@+id/list_songs"
+					android:textFilterEnabled="true" android:fastScrollEnabled="true" style="@style/List"></ListView>
+			</LinearLayout>
+		</FrameLayout>
+
+		<LinearLayout
+			style="@style/Toolbar"
+		    android:id="@+id/linearLayout2"
+		    android:gravity="center_vertical">
+
+			<ImageView android:src="@drawable/icon48_rewind"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:id="@+id/image_previous"></ImageView>
+			<ImageView android:src="@drawable/icon48_pause"
+				android:visibility="gone" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:id="@+id/image_pause"></ImageView>
+
+			<ImageView
+			    android:id="@+id/image_play"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:src="@drawable/icon48_play" >
+
+</ImageView>
+
+			<ImageView
+			    android:id="@+id/image_next"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:src="@drawable/icon48_forward" >
+</ImageView>
+
+			<LinearLayout
+			    android:id="@+id/linearLayout3"
+			    android:layout_width="fill_parent"
+			    android:layout_height="fill_parent"
+			    android:gravity="right|center_vertical"
+			    android:orientation="vertical"
+			    android:paddingLeft="3dp"
+			    android:paddingRight="3dp" >
+
+				<TextView
+				    android:id="@+id/text_song"
+				    style="@style/Label.small"
+				    android:ellipsize="end"
+				    android:lines="1"
+				    android:scrollHorizontally="true"
+				    android:textColor="#ffffff"
+				    android:textStyle="bold" />
+
+				<TextView
+				    android:id="@+id/text_artist"
+				    style="@style/Label.small"
+				    android:ellipsize="end"
+				    android:lines="1"
+				    android:scrollHorizontally="true"
+				    android:textColor="#bebebe" >
+</TextView>
+			</LinearLayout>
+		</LinearLayout>
+	</LinearLayout>
+</TabHost>

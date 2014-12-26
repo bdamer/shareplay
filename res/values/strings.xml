@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SharePlay</string>
+
+    <string name="button_ok">OK</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_yes">Yes</string>
+    <string name="button_no">No</string>
+    <string name="button_dont_ask_again">Do not ask again</string>
+    
+	<string name="dialog_actions">Actions</string>
+    <string name="dialog_add_server">Add Share</string>
+    <string name="dialog_catalog_update">Updating Song List</string>
+    <string name="dialog_connecting">Connecting to server&#8230;</string>
+    <string name="dialog_edit_server">Edit Share</string>
+    <string name="dialog_edit_password">Edit Password</string>
+	<string name="dialog_enter_password">Enter Password</string>
+	<string name="dialog_error">Error</string>
+	<string name="dialog_info">Info</string>
+    <string name="dialog_select_playlist">Select Playlist</string>
+	
+    <string name="label_requesting_data">Requesting songs from share&#8230;</string>
+    <string name="label_adding_songs">Adding songs to database&#8230;</string>
+    <string name="label_now_playing">Now playing&#160;</string>
+	<string name="label_edit_password">Edit Password</string>
+    <string name="label_remove">Remove</string>
+    <string name="label_name">Name</string>
+    <string name="label_host_or_address">Hostname or IP address</string>
+    <string name="label_server_selection">Please select a share to connect to:</string>
+    <string name="label_enter_password">The share requires you to supply a password:</string>
+    <string name="last_seen">Last seen:&#160;</string>
+    <string name="label_download">Download</string>
+	<string name="label_download_song">Downloading song to home directory.</string>
+    <string name="label_adding_playlist">Loading playlist:&#160;</string>
+    <string name="label_enable_feedback">Enable Developer Feedback</string>
+    <string name="label_enable_proxy">Enable Stream Proxy</string>
+    <string name="label_proxy_details">Check if you are experiencing problems during streaming</string>
+    <string name="label_port">Port</string>
+    
+    <string name="message_confirm_clear">Are you sure you want to remove all saved shares?</string>
+    <string name="message_error_server">Could not add share. Please enter both a name and address, or use the back button to return to the previous screen.</string>
+    <string name="message_error">An error occurred. Please try again!</string>
+    <string name="message_error_loading_song">There was an error loading the song. Please try again!</string>
+	<string name="message_connect_server">Error connecting to share.</string>
+    <string name="message_error_connection">There was an error connecting to the selected share. Please make sure that you are connected to the network and try again.</string>
+    <string name="message_info">Version %s \u00A9 2013 Ben Damer</string>
+    <string name="message_help">To play a song, click on an artist, album, and finally the song that you want to play.\n\nTo filter any of the lists, either use your physical keyboard, or hit the <b>Search</b> button which displays a soft-keyboard.\n\nTo download a song, click and hold the item in the song list, then select <b>Download</b>. The file will be saved to your phone\'s home folder.\n\n<b>Shuffle</b> Switches shuffle mode.\n\n<b>Repeat</b> Switches repeat mode.\n\n<b>Playlists</b> Displays all playlists on this server.\n\n<b>Update Songs</b> Refreshes list of songs. This is only necessary, when the songs on the server have changed.\n\n<b>Clear Filters</b> Clears all list filters.</string>
+    <string name="message_connect_server_fb">Error connecting to share. Do you want to send feedback about this error to the developer so it can be fixed in a future version?</string>
+    <string name="message_connect_itunes">Connections to iTunes are currently not supported.</string>
+    	    
+    <string name="option_update_catalog">Update Songs</string>
+    <string name="option_clear_filters">Clear Filters</string>
+    <string name="option_search">Search</string>
+    <string name="option_shuffle">Shuffle</string>
+    <string name="option_repeat">Repeat</string>
+    <string name="option_info">Info</string>
+    <string name="option_playlists">Playlists</string>
+    
+    <string name="tab_artists">Artists</string>
+    <string name="tab_albums">Albums</string>
+    <string name="tab_playlists">Playlists</string>
+    <string name="tab_songs">Songs</string>
+</resources>

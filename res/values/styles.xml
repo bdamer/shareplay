@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="Activity">
+    	<item name="android:layout_height">fill_parent</item>
+    	<item name="android:layout_width">fill_parent</item>
+		<item name="android:orientation">vertical</item>
+	</style>
+
+	<style name="Dialog">
+		<item name="android:orientation">vertical</item>
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">fill_parent</item>
+		<item name="android:padding">5dp</item>
+		<item name="android:minHeight">100dp</item>
+		<item name="android:minWidth">275dp</item>
+	</style>
+
+    <style name="Button">
+    	<item name="android:layout_height">wrap_content</item>
+    	<item name="android:layout_width">fill_parent</item>
+    </style>
+    
+    <style name="Button.large">
+    	<item name="android:textSize">15sp</item>    
+    </style>
+
+	<style name="Button.small">
+		<item name="android:textSize">20sp</item>
+	</style>
+	
+	<style name="ImageButton">
+	    <item name="android:background">@android:color/transparent</item>
+	</style>
+
+	<style name="Label">
+		<item name="android:textColor">#ffffff</item>
+	</style>
+
+    <style name="Label.large">
+    	<item name="android:padding">3dp</item>
+    	<item name="android:layout_height">wrap_content</item>
+    	<item name="android:layout_width">fill_parent</item>
+    	<item name="android:textSize">15sp</item>
+    </style>
+    
+    <style name="Label.small">
+		<item name="android:textColor">#7e7987</item>
+    	<item name="android:layout_height">wrap_content</item>
+    	<item name="android:layout_width">wrap_content</item>
+    	<item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+    </style>
+    
+    <style name="List">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+    	<item name="android:cacheColorHint">#000000</item>
+    </style>
+    
+    <style name="Row">
+    	<item name="android:orientation">vertical</item>
+  		<item name="android:layout_width">fill_parent</item>
+  		<item name="android:layout_height">fill_parent</item>
+    	<item name="android:paddingLeft">6dip</item>
+    	<item name="android:textColor">#ffffff</item>
+    	<item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    	<item name="android:gravity">center_vertical</item>
+    	<item name="android:minHeight">?android:attr/listPreferredItemHeight</item>  		  		
+    </style>
+    
+    <style name="Toolbar">
+		<item name="android:background">#284275</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:layout_width">fill_parent</item>
+	    <item name="android:layout_height">wrap_content</item>
+	    <item name="android:orientation">horizontal</item>
+    </style>
+    
+    <style name="ToolbarLabel">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+    </style>
+
+    <style name="Tab">
+    	<item name="android:layout_width">fill_parent</item>
+    	<item name="android:layout_height">fill_parent</item>
+    	<item name="android:background">#7e7987</item>
+    	<item name="android:minHeight">48dp</item>
+    	<item name="android:gravity">center</item>
+    	<item name="android:orientation">vertical</item>
+    </style>
+    
+</resources>
