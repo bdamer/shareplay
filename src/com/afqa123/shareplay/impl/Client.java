@@ -158,43 +158,43 @@ public class Client implements IClient {
 		final static int ASSU = 0x61737375; // daap.???
 		final static int ASTN = 0x6173746e;	// daap.songtracknumber
 		final static int AVDB = 0x61766462;	// daap.serverdatabases	response to a /databases
-		final static int MBCL = 0;	// dmap.bag
-		final static int MCCR = 1835230066;	// dmap.contentcodesresponse	the response to the content-codes request
-		final static int MCNA = 1835232865;	// dmap.contentcodesname the full name of the code
-		final static int MCNM = 1835232877;	// dmap.contentcodesnumber the four letter code
-		final static int MCTC = 1835234403;	// dmap.???		number of containers
-		final static int MCTY = 1835234425;	// dmap.contentcodestype the type of the code (see appendix b for type values)
-		final static int MDCL = 1835295596;	// dmap.dictionary - a dictionary entry
-		final static int MIID = 1835624804;	// dmap.itemid - an item's id
+		final static int MBCL = 0x6d62636c;	// dmap.bag
+		final static int MCCR = 0x6d636372;	// dmap.contentcodesresponse	the response to the content-codes request
+		final static int MCNA = 0x6d636e61;	// dmap.contentcodesname the full name of the code
+		final static int MCNM = 0x6d636e6d;	// dmap.contentcodesnumber the four letter code
+		final static int MCTC = 0x6d637463;	// dmap.???		number of containers
+		final static int MCTY = 0x6d637479;	// dmap.contentcodestype the type of the code (see appendix b for type values)
+		final static int MDCL = 0x6d64636c;	// dmap.dictionary - a dictionary entry
+		final static int MIID = 0x6d696964;	// dmap.itemid - an item's id
 		final static int MIKD = 0x6d696b64; // dmap.itemkind - the kind of item.  So far, only '2' has been seen, an audio file?
-		final static int MIMC = 1835625827; // dmap.itemcount - number of items in a container
-		final static int MINM = 1835626093;	// dmap.itemname - an items name
+		final static int MIMC = 0x6d696d63; // dmap.itemcount - number of items in a container
+		final static int MINM = 0x6d696e6d;	// dmap.itemname - an items name
 		final static int MLCL = 0x6d6c636c;	// dmap.listing		a list
-		final static int MLID = 1835821412;	// dmap.sessionid		the session id for the login session
-		final static int MLIT = 1835821428;	// dmap.listingitem	a single item in said list
+		final static int MLID = 0x6d6c6964;	// dmap.sessionid		the session id for the login session
+		final static int MLIT = 0x6d6c6974;	// dmap.listingitem	a single item in said list
 		final static int MLOG = 0x6d6c6f67;	// dmap.loginresponse	response to a /login		
 		final static int MPCO = 0x6d70636f;	// dmap.parentcontainerid
-		final static int MPER = 1836082546;	// dmap.persistentid - a persistend id
-		final static int MPRO = 1836085871;	// dmap.protocolversion
+		final static int MPER = 0x6d706572;	// dmap.persistentid - a persistend id
+		final static int MPRO = 0x6d70726f;	// dmap.protocolversion
 		final static int MRCO = 0x6d72636f;	// dmap.returnedcount	number of items returned in a request
-		final static int MSAL = 1836278124;	// dmap.supportsuatologout
-		final static int MSAU = 1836278133;	// dmap.authenticationmethod (should be self explanitory)
-		final static int MSBR = 1836278386;	// dmap.supportsbrowse
-		final static int MSDC = 1836278883;	// dmap.databasescount
-		final static int MSEX = 1836279160;	// dmap.supportsextensions
-		final static int MSIX = 1836280184;	// dmap.supportsindex
-		final static int MSLR = 1836280946;	// dmap.loginrequired		
-		final static int MSPI = 1836281961;	// dmap.supportspersistentids
-		final static int MSRS = 1836282483;	// dmap.supportsresolve
+		final static int MSAL = 0x6d73616c;	// dmap.supportsuatologout
+		final static int MSAU = 0x6d736175;	// dmap.authenticationmethod (should be self explanitory)
+		final static int MSBR = 0x6d736272;	// dmap.supportsbrowse
+		final static int MSDC = 0x6d736463;	// dmap.databasescount
+		final static int MSEX = 0x6d736578;	// dmap.supportsextensions
+		final static int MSIX = 0x6d736978;	// dmap.supportsindex
+		final static int MSLR = 0x6d736c72;	// dmap.loginrequired		
+		final static int MSPI = 0x6d737069;	// dmap.supportspersistentids
+		final static int MSRS = 0x6d737273;	// dmap.supportsresolve
 		final static int MSRV = 0x6d737276;	// dmap.serverinforesponse	response to a /server-info
-		final static int MSTM = 1836282989;	// dmap.timeoutinterval
-		final static int MSTT = 1836282996;	// dmap.status - response status code
-		final static int MSUP = 1836283248;	// dmap.supportsupdate
-		final static int MSQY = 1836282233;	// dmap.supportsquery		
+		final static int MSTM = 0x6d73746d;	// dmap.timeoutinterval
+		final static int MSTT = 0x6d737474;	// dmap.status - response status code
+		final static int MSUP = 0x6d737570;	// dmap.supportsupdate
+		final static int MSQY = 0x6d737179;	// dmap.supportsquery		
 		final static int MTCO = 0x6d74636f;	// dmap.specifiedtotalcount number of items in response to a request
-		final static int MUPD = 1836413028;	// dmap.updateresponse	response to a /update
-		final static int MUSR = 1836413810;	// dmap.serverrevision	revision to use for requests
-		final static int MUTY = 1836414073;	// dmap.updatetype
+		final static int MUPD = 0x6d757064;	// dmap.updateresponse	response to a /update
+		final static int MUSR = 0x6d757372;	// dmap.serverrevision	revision to use for requests
+		final static int MUTY = 0x6d757479;	// dmap.updatetype
 	};
 
 	public interface OnConnectedListener {
@@ -336,6 +336,11 @@ public class Client implements IClient {
 							m.arg1 = i;
 							m.arg2 = count;
 							m.sendToTarget();
+						}
+						
+						if (i > 0 && i % 500 == 0) {
+							// Flush to keep transaction size small
+							_catalog.flush(true);							
 						}
 		
 						getSong(_catalog);
@@ -774,7 +779,7 @@ public class Client implements IClient {
 		_server.setRevision(_in.readInt());
 		endRequest(_in);
 	}
-
+	
 	@SuppressWarnings("unused")
 	private void getDatabaseList() throws Exception {
 
@@ -843,6 +848,8 @@ public class Client implements IClient {
 			
 		matchCode(_in, IResponse.MRCO);
 		returnedCount = _in.readInt();
+		
+		logger.debug(String.format("Server returned %d of %d total songs.", returnedCount, totalCount));
 			
 		matchCode(_in, IResponse.MLCL);			
 		
@@ -874,6 +881,9 @@ public class Client implements IClient {
 				case IResponse.MIID:
 					id = _in.readInt();
 					break;				
+				case IResponse.MIKD: // item kind - currently not in use
+					_in.skipBytes(size);
+					break;
 			    case IResponse.MINM:
 					name = readString(size);
 					break;
@@ -897,7 +907,7 @@ public class Client implements IClient {
 					}
 					break;
 				default:
-					//Log.d(Constants.LOG_SOURCE, "Unexpected code: " + Integer.toHexString(code));
+					logger.warn(String.format("Unexpected code: %s", Integer.toHexString(code)));
 					_in.skipBytes(size);
 					break;
 			}
@@ -912,7 +922,10 @@ public class Client implements IClient {
 		}
 		
 		if (SUPPORTED_FORMATS.contains(format)) {
+			//logger.debug(String.format("Adding song (%d): %s - %s - %s", id, artist, album, name));
 			catalog.addSong(name, track, id, album, artist);
+		} else {
+			logger.warn(String.format("Unsupported format '%s' - not adding song.", format));
 		}
 	}
 	

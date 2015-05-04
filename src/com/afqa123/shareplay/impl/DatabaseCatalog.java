@@ -274,6 +274,13 @@ public class DatabaseCatalog implements Catalog {
 	}
 	
 	@Override
+	public void flush(boolean success) {
+		logger.debug("Flushing catalog...");
+		commit(success);
+		prepare();
+	}
+	
+	@Override
 	public void commit(boolean success) {
 		SQLiteDatabase db = helper.getWritableDatabase();
 		try {
@@ -316,7 +323,7 @@ public class DatabaseCatalog implements Catalog {
 			helper.getWritableDatabase().insertOrThrow(DBHelper.TBL_SONGS, null, values);
 					
 		} catch (Exception ex) {
-			logger.error("Error adding song.");
+			logger.error("Error adding song.", ex);
 		}
 	}
 	
@@ -348,7 +355,7 @@ public class DatabaseCatalog implements Catalog {
 			values.put(DBHelper.COL_COUNT, count);
 			return helper.getWritableDatabase().insertOrThrow(DBHelper.TBL_PLAYLISTS, null, values);
 		} catch (Exception ex) {
-			logger.error("Error adding playlist.");
+			logger.error("Error adding playlist.", ex);
 			return 0;
 		}
 	}
@@ -362,7 +369,7 @@ public class DatabaseCatalog implements Catalog {
 			values.put(DBHelper.COL_PLAYLIST_ID, playlistId);
 			helper.getWritableDatabase().insertOrThrow(DBHelper.TBL_SONGS_PLAYLISTS, null, values);
 		} catch (Exception ex) {
-			logger.error("Error adding playlist entry.");
+			logger.error("Error adding playlist entry.", ex);
 		}
 	}
 	

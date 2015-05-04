@@ -155,6 +155,8 @@ public interface Catalog {
 	 */
 	void prepare();
 	
+	void flush(boolean success);
+	
 	/**
 	 * Commits pending catalog updates.
 	 */
