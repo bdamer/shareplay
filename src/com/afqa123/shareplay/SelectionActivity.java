@@ -43,6 +43,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TabHost;
+import android.widget.Toast;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
 
@@ -471,6 +472,11 @@ public class SelectionActivity extends TabActivity {
 				// get rid of cursor, so it'll be refreshed after
 				// the catalog update
 				artistList.releaseCursor();
+				
+				// Show song count
+				int songCount = client.getCatalog().getSongCount();
+				Context ctx = getApplicationContext();
+				Toast.makeText(ctx, String.format("Downloaded %d songs", songCount), Toast.LENGTH_LONG).show();
 				
 				int count = client.getCatalog().getArtistCount();
 				if (count > 0) {

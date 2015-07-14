@@ -34,6 +34,8 @@ import com.afqa123.shareplay.data.Item;
 import com.afqa123.shareplay.data.Playlist;
 import com.afqa123.shareplay.interfaces.Catalog;
 import com.afqa123.shareplay.interfaces.IClient;
+import java.io.BufferedInputStream;
+import java.io.EOFException;
 
 public class Client implements IClient {
 
@@ -51,6 +53,7 @@ public class Client implements IClient {
 	private static final int CLIENT_DOWNLOAD_COMPLETE = 10;
 	private static final int CLIENT_DOWNLOAD_ERROR = 11;
 	private static final int DATABASE_ID = 1;
+	private static final String DEFAULT_NAME = "Unknown";
 	private static final String DEFAULT_ALBUM = "Unknown album";
 	private static final String DEFAULT_ARTIST = "Unknown artist";
 	private static final boolean LOAD_SONGS = true;
@@ -389,7 +392,7 @@ public class Client implements IClient {
 	
 	private class DownloadThread extends StoppableThread {
 		
-		private Long _id;
+		private final Long _id;
 		
 		public DownloadThread(final Long id) {
 			_id = id;
@@ -439,19 +442,17 @@ public class Client implements IClient {
 		}
 	}
 
-	private static byte[] _buffer = new byte[BUFFER_SIZE];
-	private static int _offset = 0;
-	private static int _read = 0;                               
+	private static final byte[] _buffer = new byte[BUFFER_SIZE];
 
-	private long _sessionId;
+    private long _sessionId;
 	private DataInputStream _in;
-	private List<ContentCode> _contentCodes;
+	private final List<ContentCode> _contentCodes;
 	private Catalog _catalog;
 	private Server _server;
 	private StoppableThread _worker;
 	private StoppableThread _downloader;
 	private boolean _connected;
-	private Handler _handler;
+	private final Handler _handler;
 	private OnConnectedListener _onConnectedListener;
 	private OnErrorListener _onErrorListener;
 	private OnAuthorizationListener _onAuthorizationListener;
@@ -490,7 +491,7 @@ public class Client implements IClient {
 		_server = server;
 
 		Thread t = new Thread() {
-			
+			@Override
 			public void run() {
 				
 				try {
@@ -586,7 +587,7 @@ public class Client implements IClient {
 		_connection.connect();
 		
 		InputStream is = _connection.getInputStream();
-		DataInputStream in = new DataInputStream(is);
+		DataInputStream in = new DataInputStream(new BufferedInputStream(is));
 		if (response > 0) {
 			matchCode(in, response);
 			matchCode(in, IResponse.MSTT);
@@ -627,80 +628,90 @@ public class Client implements IClient {
 		}			
 	}
 
-	private String readString(int size) throws IOException {
-		_offset = 0;
-		while ( (_read = _in.read(_buffer, _offset, size)) != size ) {
-			if (_read == -1) {
-				break;
-			}
-			_offset = _read;
-			size -= _read;
+	private String readString(final int size) throws IOException {
+        int read;
+        int total = 0;
+		int offset = 0;
+		while (true) {
+            read = _in.read(_buffer, offset, size - total);
+            if (read == -1) {
+                return null; // end of stream
+            }
+            total += read;
+            offset += read;
+			if (total >= size) {
+                break; // end of string
+            }
 		}
-		return new String(_buffer, 0, size);
+        return new String(_buffer, 0, total);
 	}
 	
 	private void getServerInfo() throws Exception {
 		Map<String,Object> flags = new HashMap<String,Object>();
 		_in = beginRequest(IRequest.SERVER_INFO, IResponse.MSRV);
 		
-		while (_in.available() > 0) {
-			int code = _in.readInt();
-			int size = _in.readInt();
-			
-			switch (code) {
-				case IResponse.MPRO:
-					flags.put(Server.FLAG_DMAP_VERSION, _in.readInt());
-					break;				
-				case IResponse.APRO:
-					flags.put(Server.FLAG_DAAP_VERSION, _in.readInt());
-					break;
-				case IResponse.MINM:
-					_server.setName(readString(size));
-					break;
-				case IResponse.MSAU:
-					flags.put(Server.FLAG_AUTHENTICATION, _in.readBoolean());
-					break;
-				case IResponse.MSLR:
-					flags.put(Server.FLAG_LOGIN_REQUIRED, _in.readBoolean());
-					break;
-				case IResponse.MSTM:
-					flags.put(Server.FLAG_TIMEOUT_INTERVAL, _in.readInt());
-					break;
-				case IResponse.MSAL:
-					flags.put(Server.FLAG_AUTO_LOGOUT, _in.readBoolean());
-					break;
-				case IResponse.MSUP:
-					flags.put(Server.FLAG_UPDATE, _in.readBoolean());
-					break;
-				case IResponse.MSPI:
-					flags.put(Server.FLAG_PERSISTENT_IDS, _in.readBoolean());
-					break;
-				case IResponse.MSEX:
-					flags.put(Server.FLAG_EXTENSIONS, _in.readBoolean());
-					break;
-				case IResponse.MSBR:
-					flags.put(Server.FLAG_BROWSING, _in.readBoolean());
-					break;
-				case IResponse.MSQY:
-					flags.put(Server.FLAG_QUERIES, _in.readBoolean());
-					break;
-				case IResponse.MSIX:
-					flags.put(Server.FLAG_INDEXING, _in.readBoolean());
-					break;
-				case IResponse.MSRS:
-					flags.put(Server.FLAG_RESOLVE, _in.readBoolean());
-					break;
-				case IResponse.MSDC:
-					_server.setDatabaseCount(_in.readInt());
-					break;
-				default:
-					//Log.d(Constants.LOG_SOURCE, "Unexpected code: " + Integer.toHexString(code));
-					_in.skipBytes(size);
-					break;
-			}			
-		}
+        try {
+            while (true) {
+                int code = _in.readInt();
+                int size = _in.readInt();
 
-		endRequest(_in);
+                switch (code) {
+                    case IResponse.MPRO:
+                        flags.put(Server.FLAG_DMAP_VERSION, _in.readInt());
+                        break;				
+                    case IResponse.APRO:
+                        flags.put(Server.FLAG_DAAP_VERSION, _in.readInt());
+                        break;
+                    case IResponse.MINM:
+                        _server.setName(readString(size));
+                        break;
+                    case IResponse.MSAU:
+                        flags.put(Server.FLAG_AUTHENTICATION, _in.readBoolean());
+                        break;
+                    case IResponse.MSLR:
+                        flags.put(Server.FLAG_LOGIN_REQUIRED, _in.readBoolean());
+                        break;
+                    case IResponse.MSTM:
+                        flags.put(Server.FLAG_TIMEOUT_INTERVAL, _in.readInt());
+                        break;
+                    case IResponse.MSAL:
+                        flags.put(Server.FLAG_AUTO_LOGOUT, _in.readBoolean());
+                        break;
+                    case IResponse.MSUP:
+                        flags.put(Server.FLAG_UPDATE, _in.readBoolean());
+                        break;
+                    case IResponse.MSPI:
+                        flags.put(Server.FLAG_PERSISTENT_IDS, _in.readBoolean());
+                        break;
+                    case IResponse.MSEX:
+                        flags.put(Server.FLAG_EXTENSIONS, _in.readBoolean());
+                        break;
+                    case IResponse.MSBR:
+                        flags.put(Server.FLAG_BROWSING, _in.readBoolean());
+                        break;
+                    case IResponse.MSQY:
+                        flags.put(Server.FLAG_QUERIES, _in.readBoolean());
+                        break;
+                    case IResponse.MSIX:
+                        flags.put(Server.FLAG_INDEXING, _in.readBoolean());
+                        break;
+                    case IResponse.MSRS:
+                        flags.put(Server.FLAG_RESOLVE, _in.readBoolean());
+                        break;
+                    case IResponse.MSDC:
+                        _server.setDatabaseCount(_in.readInt());
+                        break;
+                    default:
+                        //Log.d(Constants.LOG_SOURCE, "Unexpected code: " + Integer.toHexString(code));
+                        _in.skipBytes(size);
+                        break;
+                }			
+            }
+        } catch (EOFException e) {
+            // expected
+        } finally {
+    		endRequest(_in);
+        }
 		
 		_server.setFlags(flags);
 	}
@@ -833,8 +844,6 @@ public class Client implements IClient {
 	private int beginSongList(final int database) throws Exception {		
 		logger.debug("Getting song list from server.");
 
-		int returnedCount = 0;
-		
 		_in = beginRequest(String.format(IRequest.SONG_LIST, database, SONG_META_FIELDS, _sessionId, _server.getRevision()),
 				IResponse.ADBS);
 
@@ -847,7 +856,7 @@ public class Client implements IClient {
 		int totalCount = _in.readInt();
 			
 		matchCode(_in, IResponse.MRCO);
-		returnedCount = _in.readInt();
+		int returnedCount = _in.readInt();
 		
 		logger.debug(String.format("Server returned %d of %d total songs.", returnedCount, totalCount));
 			
@@ -862,7 +871,6 @@ public class Client implements IClient {
 	}
 	
 	private void getSong(final Catalog catalog) throws Exception {
-		
 		int size, id = 0, track = 0;
 		String name = null, 
 			album = null, 
@@ -870,47 +878,51 @@ public class Client implements IClient {
 			format = null;
 
 		boolean done = false;
-		while (!done && _in.available() > 0) {
-			int code = _in.readInt();
-			size = _in.readInt();
+		while (!done) {
+            try {
+                int code = _in.readInt();
+                size = _in.readInt();
 
-			switch (code) {
-				case IResponse.MLIT:
-					done = true;
-					break;
-				case IResponse.MIID:
-					id = _in.readInt();
-					break;				
-				case IResponse.MIKD: // item kind - currently not in use
-					_in.skipBytes(size);
-					break;
-			    case IResponse.MINM:
-					name = readString(size);
-					break;
-				case IResponse.ASAL:
-					album = readString(size);
-					break;
-				case IResponse.ASAR:
-					artist = readString(size);
-					break;
-				case IResponse.ASTN:
-					track = _in.readShort();
-					break;
-				case IResponse.ASFM:
-					format = readString(size);
-					if (format != null) {
-						if (format.length() > 3) {
-							format = format.substring(0, 3);
-						}
-						
-						format = format.toLowerCase();
-					}
-					break;
-				default:
-					logger.warn(String.format("Unexpected code: %s", Integer.toHexString(code)));
-					_in.skipBytes(size);
-					break;
-			}
+                switch (code) {
+                    case IResponse.MLIT:
+                        done = true;
+                        break;
+                    case IResponse.MIID:
+                        id = _in.readInt();
+                        break;				
+                    case IResponse.MIKD: // item kind - currently not in use
+                        _in.skipBytes(size);
+                        break;
+                    case IResponse.MINM:
+                        name = readString(size);
+                        break;
+                    case IResponse.ASAL:
+                        album = readString(size);
+                        break;
+                    case IResponse.ASAR:
+                        artist = readString(size);
+                        break;
+                    case IResponse.ASTN:
+                        track = _in.readShort();
+                        break;
+                    case IResponse.ASFM:
+                        format = readString(size);
+                        if (format != null) {
+                            if (format.length() > 3) {
+                                format = format.substring(0, 3);
+                            }
+
+                            format = format.toLowerCase();
+                        }
+                        break;
+                    default:
+                        // logger.warn(String.format("Unexpected code: %s", Integer.toHexString(code)));
+                        _in.skipBytes(size);
+                        break;
+                }
+            } catch (EOFException e) {
+                done = true; // expected
+            }
 		}
 		
 		if (artist == null || artist.trim().length() == 0) {
@@ -921,8 +933,12 @@ public class Client implements IClient {
 			album = DEFAULT_ALBUM;
 		}
 		
-		if (SUPPORTED_FORMATS.contains(format)) {
-			//logger.debug(String.format("Adding song (%d): %s - %s - %s", id, artist, album, name));
+		if (name == null || name.trim().length() == 0) {
+			name = DEFAULT_NAME;
+		}
+		
+        if (SUPPORTED_FORMATS.contains(format)) {
+            logger.debug(String.format("Adding song (%d): %s - %s - %s", id, artist, album, name));
 			catalog.addSong(name, track, id, album, artist);
 		} else {
 			logger.warn(String.format("Unsupported format '%s' - not adding song.", format));
@@ -956,52 +972,55 @@ public class Client implements IClient {
 
 		// It appears that the counts returned from rhythmbox are 
 		// always 0 - just read until there is no more data...
-		while (_in.available() > 0) {
-			int size;
-			Playlist pl = new Playlist();
-			
-			boolean done = false;
-			while (!done && _in.available() > 0) {
-				
-				int code = _in.readInt();
-				size = _in.readInt();
-		
-				switch (code) {
-					case IResponse.MLIT:
-						done = true;
-						break;
-		
-					case IResponse.MIID:
-						pl.setServerId((long)_in.readInt());
-						break;
-						
-				    case IResponse.MINM:
-						pl.setName(readString(size));
-						break;
-						
-				    case IResponse.MIMC:
-				    	pl.setCount(_in.readInt());
-				    	break;
-						
-				    case IResponse.ABPL:
-				    	pl.setBaselist(_in.readByte() == 1);
-				    	break;
-				    	
-					default:
-						//Log.d(Constants.LOG_SOURCE, "Unexpected code: " + Integer.toHexString(code));
-						_in.skipBytes(size);
-						break;
-				}
-			}
-			
-			pl.setId(catalog.addPlaylist(pl.getName(), pl.getServerId(), pl.isBaselist(), pl.getCount()));
-			
-			if (!pl.isBaselist()) {
-				result.add(pl);
-			}
-		}
-		
-		endRequest(_in);
+        try {
+            while (true) {
+                int size;
+                Playlist pl = new Playlist();
+
+                boolean done = false;
+                while (!done) {
+                    int code = _in.readInt();
+                    size = _in.readInt();
+
+                    switch (code) {
+                        case IResponse.MLIT:
+                            done = true;
+                            break;
+
+                        case IResponse.MIID:
+                            pl.setServerId((long)_in.readInt());
+                            break;
+
+                        case IResponse.MINM:
+                            pl.setName(readString(size));
+                            break;
+
+                        case IResponse.MIMC:
+                            pl.setCount(_in.readInt());
+                            break;
+
+                        case IResponse.ABPL:
+                            pl.setBaselist(_in.readByte() == 1);
+                            break;
+
+                        default:
+                            //Log.d(Constants.LOG_SOURCE, "Unexpected code: " + Integer.toHexString(code));
+                            _in.skipBytes(size);
+                            break;
+                    }
+                }
+
+                pl.setId(catalog.addPlaylist(pl.getName(), pl.getServerId(), pl.isBaselist(), pl.getCount()));
+
+                if (!pl.isBaselist()) {
+                    result.add(pl);
+                }
+            }
+        } catch (EOFException e) {
+            // expected
+        } finally {
+    		endRequest(_in);
+        }	
 	
 		return result;
 	}
