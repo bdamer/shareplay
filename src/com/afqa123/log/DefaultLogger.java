@@ -4,7 +4,7 @@ import android.util.Log;
 
 class DefaultLogger implements Logger {
 
-	private String className;
+	private final String className;
 	
 	public DefaultLogger(String forClass) {
 		className = forClass;

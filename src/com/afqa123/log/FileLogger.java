@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Date;
 
 import android.os.Environment;
+import android.util.Log;
 
 class FileLogger implements Logger {
 
@@ -14,53 +15,62 @@ class FileLogger implements Logger {
 	private static final String LEVEL_DEBUG = "DEBUG";
 	private static final String LEVEL_WARNING = "WARN";
 	private static final String LEVEL_INFO = "INFO";
-
+	private static BufferedWriter writer;
 	private final String className;
-	
+    
 	public FileLogger(String forClass) {
 		className = forClass;
+        synchronized (FileLogger.class) {
+            if (writer == null) {
+    			try {
+                    File f = openFile();
+                    // BufferedWriter for performance, true to set append to file flag
+		            writer = new BufferedWriter(new FileWriter(f, true)); 
+                } catch (IOException e) {
+                    Log.e(className, "Could not create log file.", e);
+                }
+            }
+        }
 	}
-		
-	private void log(String level, String msg, Throwable t) {
+	
+    private File openFile() throws IOException {
         File SDCardRoot = Environment.getExternalStorageDirectory();
-        // @TODO this implementation should keep a file open and flush each time it logs
         File logFile = new File(SDCardRoot, "shareplay.log");		
-		
 		if (!logFile.exists()) {
-			try {
-				logFile.createNewFile();
-		    } catch (IOException e) {
-		    	// tough luck...
-		    }
+            logFile.createNewFile();
 		}
-		
-		try {
-			//BufferedWriter for performance, true to set append to file flag
-		    BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true)); 
-		    buf.append(new Date().toGMTString());
-		    buf.append(',');
-		    buf.append(level);
-		    buf.append(',');
-		    buf.append(className);
-		    buf.append(',');
-		    buf.append(msg);
-		    buf.newLine();
+        return logFile;
+    }
+    
+	private void log(String level, String msg, Throwable t) {
+        synchronized (FileLogger.class) {
+            try {
+                writer.append(new Date().toGMTString());
+                writer.append(',');
+                writer.append(level);
+                writer.append(',');
+                writer.append(className);
+                writer.append(',');
+                writer.append(msg);
+                writer.newLine();
 
-		    if (t != null) {
-		    	buf.append(t.getClass().getName());
-		    	buf.append(t.getMessage());
-		    	buf.newLine();
-		    	
-				StackTraceElement elements[] = t.getStackTrace();
-				for (StackTraceElement el : elements) {
-					buf.append("at " + el.getClassName() + "." + el.getMethodName() + "(" + el.getFileName() + ":" + el.getLineNumber() + ")");
-					buf.newLine();
-				}
-		    }
-		    buf.close();
-		} catch (IOException e) {
-		
-		}
+                if (t != null) {
+                    writer.append(t.getClass().getName());
+                    writer.append(t.getMessage());
+                    writer.newLine();
+
+                    StackTraceElement elements[] = t.getStackTrace();
+                    for (StackTraceElement el : elements) {
+                        writer.append("at " + el.getClassName() + "." + el.getMethodName() + "(" + el.getFileName() + ":" + el.getLineNumber() + ")");
+                        writer.newLine();
+                    }
+                }
+
+                writer.flush();
+            } catch (IOException e) {
+                Log.e(className, "Could not write to log file.", e);
+            }
+        }
 	}
 	
 	@Override
